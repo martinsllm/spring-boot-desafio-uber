@@ -25,4 +25,9 @@ public class MovieLocationController {
                 .orElseGet(service::getAllMovies);
     }
 
+    @GetMapping("autocomplete")
+    public List<String> autocomplete(@RequestParam("q") String prefix) {
+        return service.autocomplete(prefix);
+    }
+
 }

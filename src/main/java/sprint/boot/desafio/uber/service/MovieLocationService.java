@@ -1,6 +1,7 @@
 package sprint.boot.desafio.uber.service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -28,6 +29,17 @@ public class MovieLocationService {
     public List<MovieLocation> filterByTitle(String query) {
         return getAllMovies().stream()
                 .filter(m -> m.getTitle() != null && m.getTitle().toLowerCase().contains(query.toLowerCase()))
+                .collect(Collectors.toList());
+    }
+
+    public List<String> autocomplete(String prefix) {
+        return getAllMovies().stream()
+                .map(MovieLocation::getTitle)
+                .filter(Objects::nonNull)
+                .filter(t -> t.toLowerCase().startsWith(prefix.toLowerCase()))
+                .distinct()
+                .sorted()
+                .limit(10)
                 .collect(Collectors.toList());
     }
 
